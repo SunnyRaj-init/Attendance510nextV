@@ -17,6 +17,7 @@ export default function Home() {
       // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const { latitude, longitude } = coords;
+        console.log(latitude,longitude,"hehe")
         const lat = (latitude * Math.PI) / 180;
         const long = (longitude * Math.PI) / 180;
         setLocation({ lat, long });
@@ -34,7 +35,7 @@ export default function Home() {
               Math.cos(cloc.clong - location.long)
         ) * 6371000
       );
-      if (calcdist <= 100) {
+      if (calcdist <= 50) {
         setdist(calcdist);
       }
     }
@@ -50,7 +51,7 @@ export default function Home() {
           marginTop: "3%",
         }}
       >
-        <p>CANNOT GET YOUR LOCATION CLICK ON ALLOW TO RETRIVE LOCATION</p>
+        <p>CANNOT GET YOUR LOCATION CLICK ON ALLOW TO RETRIEVE LOCATION</p>
       </div>
     );
   } else if (dist == undefined) {
