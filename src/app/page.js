@@ -9,9 +9,7 @@ export default function Home() {
   const [id,setid] = useState();
   const [cid,setcid]=useState();
   const [cname,setcname]=useState();
-  // const [f,setf]=useState(true)
   useEffect(() => {
-    // if(f){
     const clat = (parseFloat(process.env.NEXT_PUBLIC_lat) * Math.PI) / 180;
     const clong = (parseFloat(process.env.NEXT_PUBLIC_long) * Math.PI) / 180;
     setcloc({ clat, clong });
@@ -22,8 +20,6 @@ export default function Home() {
         const lat = (latitude * Math.PI) / 180;
         const long = (longitude * Math.PI) / 180;
         setLocation({ lat, long });
-        // setf(false)
-        console.log(location)
       });
     }
   }, []);
@@ -40,7 +36,6 @@ export default function Home() {
       );
       if (calcdist <= 100) {
         setdist(calcdist);
-        // console.log(calcdist, "ahdshdsa");
       }
     }
   }, [location]);
@@ -131,10 +126,9 @@ export default function Home() {
             />
           </label>
           <br />
-
+          <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg" onClick={()=>{console.log(name,cname,id,cid)}}>Submit</button>
         </form>
         <br/>
-        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg" onClick={()=>{console.log(name,cname,id,cid)}}>Submit</button>
       </>
     );
   }
