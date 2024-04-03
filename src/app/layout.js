@@ -10,8 +10,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en " data-theme="dracula">
+      {/* <Suspense fallback={<loading/>}> */}
       <body className={inter.className}>{children}</body>
+      {/* </Suspense> */}
     </html>
   );
 }
