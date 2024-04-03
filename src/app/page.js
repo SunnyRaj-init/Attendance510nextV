@@ -126,7 +126,7 @@ export default function Home() {
             />
           </label>
           <br />
-          <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg" onClick={()=>{console.log(name,cname,id,cid)}}>Submit</button>
+          <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg" onClick={()=>{console.log(name,cname,id,cid)}}>Mark Present</button>
         </form>
         <br/>
       </>
