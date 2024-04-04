@@ -35,7 +35,7 @@ export default function Home() {
               Math.cos(cloc.clong - location.long)
         ) * 6371000
       );
-      if (calcdist <= 100) {
+      if (calcdist <= 150) {
         setdist(calcdist);
       }
     }
