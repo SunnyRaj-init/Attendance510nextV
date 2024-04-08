@@ -19,13 +19,20 @@ export default function Home() {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       if (user != null) {
-        user.getIdTokenResult().then((idTokenResult) => {
-          if (idTokenResult.claims.admin) {
-            router.replace("/manage");
-          }
-        });
-      } else {
-        router.replace("/");
+        if (user.email.split("@")[1] === "asu.edu") {
+          user.getIdTokenResult().then((idTokenResult) => {
+            if (idTokenResult.claims.admin) {
+              router.replace("/manage");
+            }
+          });
+        } else {
+          alert("PLEASE USE YOUR ASU EMAIL");
+          signOut(auth)
+            .then(() => {
+              router.replace("/");
+            })
+            .catch((error) => {});
+        }
       }
     }
   }, [user, dist, location]);
