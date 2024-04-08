@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/authcontext";
+import { auth } from "@/context/authcontext";
 export default function page() {
   const [usekey, setkey] = useState("");
   const router = useRouter();
@@ -25,25 +28,20 @@ export default function page() {
     signInWithPopup(auth, provider)
       .then((result) => {
         result.user.getIdTokenResult().then((idTokenResult) => {
-          if (idTokenResult.claims.admin === false) {
-            addAdminRole({ email: result.user.email });
+          if (!idTokenResult.claims.admin) {
+            console.log("admin false");
+            addAdminRole({ email: result.user.email }).then((res) => {
+              alert("role added");
+            });
           }
         });
       })
       .catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code
-        // const errorMessage = error.message
-        // The email of the user's account used.
-        // const email = error.customData.email
-        // The AuthCredential type that was used.
-        // const credential = GoogleAuthProvider.credentialFromError(error)
-        // ...
         alert(error.message);
       });
   };
   return (
-    <form
+    <div
       style={{
         display: "flex",
         justifyContent: "center",
@@ -63,10 +61,11 @@ export default function page() {
           onChange={(e) => {
             setkey(e.target.value);
           }}
+          disabled={usekey === process.env.NEXT_PUBLIC_skey}
         />
       </label>
       <br />
-      {usekey == process.env.NEXT_PUBLIC_skey && (
+      {usekey === process.env.NEXT_PUBLIC_skey && (
         <button
           className="btn"
           onClick={(e) => {
@@ -84,6 +83,6 @@ export default function page() {
           </svg>
         </button>
       )}
-    </form>
+    </div>
   );
 }

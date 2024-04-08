@@ -1,7 +1,29 @@
 "use client";
 import { useAuthContext } from "@/context/authcontext";
+import { useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/context/authcontext";
 export default function page() {
+  const isFirstRender = useRef(true);
+  const router = useRouter();
   const { user } = useAuthContext();
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      if (user != null) {
+        user.getIdTokenResult().then((idTokenResult) => {
+          if (!idTokenResult.claims.admin) {
+            signOut(auth)
+              .then(() => {
+                router.replace("/");
+              })
+              .catch((error) => {});
+          }
+        });
+      }
+    }
+  }, [user]);
   return (
     <div
       style={{
@@ -12,7 +34,19 @@ export default function page() {
         marginTop: "3%",
       }}
     >
-      page
+      Welcome Admin
+      <button
+        className="btn btn-sm btn-secondary"
+        onClick={(e) => {
+          signOut(auth)
+            .then(() => {
+              router.replace("/");
+            })
+            .catch((error) => {});
+        }}
+      >
+        logout
+      </button>
     </div>
   );
 }

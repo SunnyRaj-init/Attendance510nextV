@@ -99,7 +99,7 @@ export default function Home() {
   } else {
     return (
       <>
-        <form
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -178,7 +178,7 @@ export default function Home() {
           >
             Mark Present
           </button>
-        </form>
+        </div>
         <br />
       </>
     );

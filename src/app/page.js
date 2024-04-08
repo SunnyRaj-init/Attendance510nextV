@@ -31,7 +31,13 @@ export default function Home() {
         // const user = result.user
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-        router.replace(`/${result.user.uid}`);
+        result.user.getIdTokenResult().then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            router.replace("/manage");
+          } else {
+            router.replace(`/${result.user.uid}`);
+          }
+        });
       })
       .catch((error) => {
         // Handle Errors here.
