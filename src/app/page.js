@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "/src/context/authcontext";
-import { useAuthContext } from "/src/context/authcontext";
+import { auth } from "@/context/authcontext";
+import { useAuthContext } from "@/context/authcontext";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();

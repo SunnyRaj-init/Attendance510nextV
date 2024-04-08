@@ -1,5 +1,5 @@
 "use client";
-
+import { useAuthContext } from "@/context/authcontext";
 export default function page() {
   const { user } = useAuthContext();
   return (
