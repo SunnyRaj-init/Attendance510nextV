@@ -35,6 +35,16 @@ export default function page() {
       }}
     >
       Welcome Admin
+      <br />
+      <button
+        className="btn btn-sm btn-secondary"
+        onClick={() => {
+          router.replace("/manage/data");
+        }}
+      >
+        Manage Data
+      </button>
+      <br />
       <button
         className="btn btn-sm btn-secondary"
         onClick={(e) => {

@@ -19,6 +19,26 @@ export default function Home() {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      fetch("/api/gettime", { method: "POST" }).then((res) => {
+        res.json().then((d) => {
+          let now = new Date().toTimeString().split(" ")[0];
+          console.log(
+            now < d.result.rows[0].start_at || now > d.result.rows[0].end_at
+          );
+          if (
+            now < d.result.rows[0].start_at ||
+            now > d.result.rows[0].end_at
+          ) {
+            console.log("inside if");
+            alert("You cannot submit now");
+            signOut(auth)
+              .then(() => {
+                router.replace("/");
+              })
+              .catch((error) => {});
+          }
+        });
+      });
       fetch("/api/ip", { method: "GET" }).then((res) => {
         res.json().then((d) => {
           setip(d.ip.replace("::ffff:", ""));

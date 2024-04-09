@@ -1,11 +1,13 @@
 "use client";
 import { json2csv } from "json-2-csv";
 import { useAuthContext } from "/src/context/authcontext";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "/src/context/authcontext";
 function page() {
+  const [start, setstart] = useState();
+  const [end, setend] = useState();
   const isFirstRender = useRef(true);
   const router = useRouter();
   const { user } = useAuthContext();
@@ -83,6 +85,57 @@ function page() {
         Delete Data
       </button>
       <br />
+      <br />
+      <br />
+      <label className="form-control w-full max-w-xs">
+        <div className="label">
+          <span className="label-text">Start time?</span>
+          <span className="label-text-alt">FORMAT: HH:MM:SS</span>
+        </div>
+        <input
+          type="text"
+          placeholder="Enter Start Time"
+          className="input input-bordered w-full max-w-xs"
+          onChange={(e) => {
+            setstart(e.target.value);
+          }}
+        />
+      </label>
+      <br />
+      <br />
+      <br />
+      <label className="form-control w-full max-w-xs">
+        <div className="label">
+          <span className="label-text">End time?</span>
+          <span className="label-text-alt">FORMAT: HH:MM:SS</span>
+        </div>
+        <input
+          type="text"
+          placeholder="Enter End Time"
+          className="input input-bordered w-full max-w-xs"
+          onChange={(e) => {
+            setend(e.target.value);
+          }}
+        />
+      </label>
+      <br />
+      <button
+        className="btn btn-active btn-secondary"
+        onClick={() => {
+          const reqbody = Object({ start: start, end: end });
+          fetch("/api/changetime", {
+            method: "POST",
+            body: JSON.stringify(reqbody),
+          }).then((res) => {
+            if (res.status == "200") {
+              alert("time updated");
+              router.replace("/manage");
+            }
+          });
+        }}
+      >
+        Update time
+      </button>
       <br />
       <br />
       <button
