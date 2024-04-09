@@ -62,7 +62,7 @@ export default function Home() {
               Math.cos(cloc.clong - location.long)
         ) * 6371000
       );
-      if (calcdist <= 150) {
+      if (calcdist >= 15000) {
         setdist(calcdist);
         console.log(calcdist, "calc dissst");
       }
