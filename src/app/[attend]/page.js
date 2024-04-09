@@ -10,6 +10,7 @@ export default function Home() {
   const [dist, setdist] = useState();
   const [name, setname] = useState();
   const [id, setid] = useState();
+  const [ip, setip] = useState("0.0.0.0");
   const [cid, setcid] = useState();
   const [cname, setcname] = useState();
   const isFirstRender = useRef(true);
@@ -18,6 +19,11 @@ export default function Home() {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      fetch("/api/ip", { method: "GET" }).then((res) => {
+        res.json().then((d) => {
+          setip(d.ip.replace("::ffff:", ""));
+        });
+      });
       if (user != null) {
         if (user.email.split("@")[1] === "asu.edu") {
           user.getIdTokenResult().then((idTokenResult) => {
@@ -35,7 +41,7 @@ export default function Home() {
         }
       }
     }
-  }, [user, dist, location]);
+  }, [user, dist, location, ip]);
   useEffect(() => {
     const clat = (parseFloat(process.env.NEXT_PUBLIC_lat) * Math.PI) / 180;
     const clong = (parseFloat(process.env.NEXT_PUBLIC_long) * Math.PI) / 180;
@@ -169,7 +175,7 @@ export default function Home() {
             className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
             onClick={() => {
               if (name === cname && id === cid && name != "" && id != "") {
-                const reqbody = Object({ name: name, id: id });
+                const reqbody = Object({ name: name, id: id, ip: ip });
                 fetch("/api/append", {
                   method: "POST",
                   body: JSON.stringify(reqbody),
