@@ -21,6 +21,8 @@ export default function page() {
               .catch((error) => {});
           }
         });
+      } else {
+        router.replace("/");
       }
     }
   }, [user]);

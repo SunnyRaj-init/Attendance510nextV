@@ -5,9 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import { auth, useAuthContext } from "/src/context/authcontext";
 import { signOut } from "firebase/auth";
 export default function Home() {
-  const [location, setLocation] = useState();
-  const [cloc, setcloc] = useState();
-  const [dist, setdist] = useState();
   const [name, setname] = useState();
   const [id, setid] = useState();
   const [ip, setip] = useState("0.0.0.0");
@@ -21,15 +18,7 @@ export default function Home() {
       isFirstRender.current = false;
       fetch("/api/gettime", { method: "POST" }).then((res) => {
         res.json().then((d) => {
-          let now = new Date().toTimeString().split(" ")[0];
-          console.log(
-            now < d.result.rows[0].start_at || now > d.result.rows[0].end_at
-          );
-          if (
-            now < d.result.rows[0].start_at ||
-            now > d.result.rows[0].end_at
-          ) {
-            console.log("inside if");
+          if (!d.accept) {
             alert("You cannot submit now");
             signOut(auth)
               .then(() => {
@@ -59,43 +48,13 @@ export default function Home() {
             })
             .catch((error) => {});
         }
+      } else {
+        router.replace("/");
       }
     }
-  }, [user, dist, location, ip]);
-  useEffect(() => {
-    const clat = (parseFloat(process.env.NEXT_PUBLIC_lat) * Math.PI) / 180;
-    const clong = (parseFloat(process.env.NEXT_PUBLIC_long) * Math.PI) / 180;
-    setcloc({ clat, clong });
-    if ("geolocation" in navigator) {
-      // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const { latitude, longitude } = coords;
-        console.log(latitude, longitude, "hehe");
-        const lat = (latitude * Math.PI) / 180;
-        const long = (longitude * Math.PI) / 180;
-        setLocation({ lat, long });
-      });
-    }
-  }, []);
-  useEffect(() => {
-    // Fetch data from API if `location` object is set
-    if (location) {
-      const calcdist = parseFloat(
-        Math.acos(
-          Math.sin(cloc.clat) * Math.sin(location.lat) +
-            Math.cos(cloc.clat) *
-              Math.cos(location.lat) *
-              Math.cos(cloc.clong - location.long)
-        ) * 6371000
-      );
-      if (calcdist >= 15000) {
-        setdist(calcdist);
-        console.log(calcdist, "calc dissst");
-      }
-    }
-  }, [location]);
-  if (location == null || location == undefined) {
-    return (
+  }, [user, ip]);
+  return (
+    <>
       <div
         style={{
           display: "flex",
@@ -105,122 +64,92 @@ export default function Home() {
           marginTop: "3%",
         }}
       >
-        <p>CANNOT GET YOUR LOCATION CLICK ON ALLOW TO RETRIEVE LOCATION</p>
-      </div>
-    );
-  } else if (dist == undefined) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          marginTop: "3%",
-        }}
-      >
-        <p>You are not in class</p>
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            marginTop: "3%",
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Name</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setname(e.target.value);
+            }}
+          />
+        </label>
+        <br />
+
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text"> Confirm Name</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setcname(e.target.value);
+            }}
+          />
+        </label>
+        <br />
+
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Student ID</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setid(e.target.value);
+            }}
+          />
+        </label>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Confirm your ID</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setcid(e.target.value);
+            }}
+          />
+        </label>
+        <br />
+        <button
+          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+          onClick={() => {
+            if (name === cname && id === cid && name != "" && id != "") {
+              const reqbody = Object({ name: name, id: id, ip: ip });
+              fetch("/api/append", {
+                method: "POST",
+                body: JSON.stringify(reqbody),
+              }).then((res) => {
+                if (res.status == "200") {
+                  alert("attendance given");
+                  signOut(auth)
+                    .then(() => {
+                      router.replace("/");
+                    })
+                    .catch((error) => {});
+                } else {
+                  console.log(res);
+                }
+              });
+            } else {
+              alert("INPUTS DO NOT MATCH");
+            }
           }}
         >
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Name</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => {
-                setname(e.target.value);
-              }}
-            />
-          </label>
-          <br />
-
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text"> Confirm Name</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => {
-                setcname(e.target.value);
-              }}
-            />
-          </label>
-          <br />
-
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Student ID</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => {
-                setid(e.target.value);
-              }}
-            />
-          </label>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Confirm your ID</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => {
-                setcid(e.target.value);
-              }}
-            />
-          </label>
-          <br />
-          <button
-            className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            onClick={() => {
-              if (name === cname && id === cid && name != "" && id != "") {
-                const reqbody = Object({ name: name, id: id, ip: ip });
-                fetch("/api/append", {
-                  method: "POST",
-                  body: JSON.stringify(reqbody),
-                }).then((res) => {
-                  if (res.status == "200") {
-                    alert("attendance given");
-                    signOut(auth)
-                      .then(() => {
-                        router.replace("/");
-                      })
-                      .catch((error) => {});
-                  } else {
-                    console.log(res);
-                  }
-                });
-              } else {
-                alert("INPUTS DO NOT MATCH");
-              }
-            }}
-          >
-            Mark Present
-          </button>
-        </div>
-        <br />
-      </>
-    );
-  }
+          Mark Present
+        </button>
+      </div>
+      <br />
+    </>
+  );
 }

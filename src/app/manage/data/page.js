@@ -44,9 +44,7 @@ function page() {
         onClick={() => {
           fetch("/api/retdata", { method: "POST" }).then((res) => {
             res.json().then((d) => {
-              console.log(d, "woah", d.result.rows);
               const res = json2csv(d.result.rows);
-              console.log(res);
               let link = document.createElement("a");
               const blob = new Blob([res], {
                 type: "text/csv;charset=utf-8;",
