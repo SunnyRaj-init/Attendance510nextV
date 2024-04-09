@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { auth, useAuthContext } from "@/context/authcontext";
+import { auth, useAuthContext } from "/src/context/authcontext";
 import { signOut } from "firebase/auth";
 export default function Home() {
   const [location, setLocation] = useState();

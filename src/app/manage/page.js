@@ -1,9 +1,9 @@
 "use client";
-import { useAuthContext } from "@/context/authcontext";
+import { useAuthContext } from "/src/context/authcontext";
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
-import { auth } from "@/context/authcontext";
+import { auth } from "/src/context/authcontext";
 export default function page() {
   const isFirstRender = useRef(true);
   const router = useRouter();

@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/authcontext";
-import { auth } from "@/context/authcontext";
+import { useAuthContext } from "/src/context/authcontext";
+import { auth } from "/src/context/authcontext";
 export default function page() {
   const [usekey, setkey] = useState("");
   const router = useRouter();
