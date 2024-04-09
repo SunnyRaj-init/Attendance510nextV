@@ -168,12 +168,26 @@ export default function Home() {
           <button
             className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
             onClick={() => {
-              console.log(name, cname, id, cid);
-              signOut(auth)
-                .then(() => {
-                  router.replace("/");
-                })
-                .catch((error) => {});
+              if (name === cname && id === cid && name != "" && id != "") {
+                const reqbody = Object({ name: name, id: id });
+                fetch("/api/append", {
+                  method: "POST",
+                  body: JSON.stringify(reqbody),
+                }).then((res) => {
+                  if (res.status == "200") {
+                    alert("attendance given");
+                    signOut(auth)
+                      .then(() => {
+                        router.replace("/");
+                      })
+                      .catch((error) => {});
+                  } else {
+                    console.log(res);
+                  }
+                });
+              } else {
+                alert("INPUTS DO NOT MATCH");
+              }
             }}
           >
             Mark Present
