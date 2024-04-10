@@ -42,16 +42,16 @@ export default function Home() {
       fetch("/api/gettime", { method: "POST" }).then((res) => {
         res.json().then((d) => {
           if (!d.accept) {
-            settim(true);
+            settim(false);
           } else {
             settim(true);
           }
         });
       });
       const k = prompt(
-        "This site collects your IP, location, and the form details that you submit: Name & ID; ENTER YES to Continue"
+        "This website collects your IP, Location. Enter YES if you accept the terms and to continue."
       );
-      if (k === "YES") {
+      if (k === "YES" || k === "Yes" || k === "yes" || k === "Y" || k === "y") {
         setacc(true);
       } else {
         setacc(false);
@@ -85,7 +85,7 @@ export default function Home() {
               Math.cos(cloc.clong - location.long)
         ) * 6371000
       );
-      if (calcdist < 50) {
+      if (calcdist < 120) {
         setdist(calcdist);
         console.log(calcdist, "calc dissst");
       }
@@ -139,7 +139,7 @@ export default function Home() {
       )}
       {acc && dist == undefined && tim && (
         <p>
-          You are not in class Your coords:{" "}
+          You are not in class! Your coordinates are :{" "}
           {coords == "" ? <p>Loading</p> : coords}
         </p>
       )}
