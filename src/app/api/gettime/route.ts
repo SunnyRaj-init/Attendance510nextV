@@ -10,7 +10,7 @@ export async function POST(request:Request) {
     const comp1=now.localeCompare(result.rows[0].start_at)
     const comp2=now.localeCompare(result.rows[0].end_at)
     if(comp1>=0 && comp2<=0){
-    return NextResponse.json({ accept:true,data:result }, { status: 200 })}
+    return NextResponse.json({ accept:true,data:result,time:now }, { status: 200 })}
     else{
       return NextResponse.json({ accept:false,data:result }, { status: 200 }) 
     }
