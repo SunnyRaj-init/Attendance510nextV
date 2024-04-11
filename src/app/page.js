@@ -22,7 +22,7 @@ export default function Home() {
         if (idTokenResult.claims.admin) {
           router.replace("/manage");
         } else {
-          fetch("/api/gettime", { method: "POST" }).then((res) => {
+          fetch("/api/gettime", { method: "GET" }).then((res) => {
             res.json().then((d) => {
               if (!d.accept) {
                 alert("You cannot submit now");
