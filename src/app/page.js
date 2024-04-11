@@ -22,7 +22,11 @@ export default function Home() {
         if (idTokenResult.claims.admin) {
           router.replace("/manage");
         } else {
-          fetch("/api/gettime", { method: "GET" }).then((res) => {
+          fetch("/api/gettime", {
+            method: "GET",
+            cache: "no-store",
+            body: JSON.stringify({ nocach: true }),
+          }).then((res) => {
             res.json().then((d) => {
               if (!d.accept) {
                 alert("You cannot submit now");
@@ -39,17 +43,19 @@ export default function Home() {
         }
       });
     } else if (isFirstRender.current) {
-      fetch("/api/gettime", { method: "GET", cache: "no-store" }).then(
-        (res) => {
-          res.json().then((d) => {
-            if (!d.accept) {
-              settim(false);
-            } else {
-              settim(true);
-            }
-          });
-        }
-      );
+      fetch("/api/gettime", {
+        method: "GET",
+        cache: "no-store",
+        body: JSON.stringify({ nocach: true }),
+      }).then((res) => {
+        res.json().then((d) => {
+          if (!d.accept) {
+            settim(false);
+          } else {
+            settim(true);
+          }
+        });
+      });
       const k = prompt(
         "This website collects your IP, Location. Enter YES if you accept the terms and to continue."
       );

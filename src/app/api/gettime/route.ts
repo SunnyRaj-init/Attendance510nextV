@@ -4,6 +4,9 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 export async function GET(request:NextRequest) {
   try {
+    const data=await request.json();
+    let {nocach}=data;
+    nocach=true;
     noStore();
     const result = await sql`SELECT * FROM lims WHERE id='1';`;
     const now=new Date().toTimeString().split(" ")[0];
