@@ -19,7 +19,7 @@ export default function Home() {
       isFirstRender.current = false;
       noStore();
       fetch("/api/gettime", {
-        method: "GET",
+        method: "POST",
         cache: "no-store",
         body: JSON.stringify({ nocach: true }),
       }).then((res) => {

@@ -25,7 +25,7 @@ export default function Home() {
         } else {
           noStore();
           fetch("/api/gettime", {
-            method: "GET",
+            method: "POST",
             cache: "no-store",
             body: JSON.stringify({ nocach: true }),
           }).then((res) => {
@@ -48,7 +48,7 @@ export default function Home() {
     } else if (isFirstRender.current) {
       noStore();
       fetch("/api/gettime", {
-        method: "GET",
+        method: "POST",
         cache: "no-store",
         body: JSON.stringify({ nocach: true }),
       }).then((res) => {
