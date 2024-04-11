@@ -53,6 +53,7 @@ export default function Home() {
         body: JSON.stringify({ nocach: true }),
       }).then((res) => {
         res.json().then((d) => {
+          console.log("TIMEE", d);
           if (!d.accept) {
             settim(false);
           } else {
