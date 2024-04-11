@@ -6,6 +6,7 @@ import { auth } from "/src/context/authcontext";
 import { useAuthContext } from "/src/context/authcontext";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
+import { unstable_noStore as noStore } from "next/cache";
 export default function Home() {
   const router = useRouter();
   const { user } = useAuthContext();
@@ -22,12 +23,14 @@ export default function Home() {
         if (idTokenResult.claims.admin) {
           router.replace("/manage");
         } else {
+          noStore();
           fetch("/api/gettime", {
             method: "GET",
             cache: "no-store",
             body: JSON.stringify({ nocach: true }),
           }).then((res) => {
             res.json().then((d) => {
+              console.log("TIMEE", d);
               if (!d.accept) {
                 alert("You cannot submit now");
                 signOut(auth)
@@ -43,6 +46,7 @@ export default function Home() {
         }
       });
     } else if (isFirstRender.current) {
+      noStore();
       fetch("/api/gettime", {
         method: "GET",
         cache: "no-store",

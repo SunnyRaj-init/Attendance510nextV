@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { auth, useAuthContext } from "/src/context/authcontext";
 import { signOut } from "firebase/auth";
+import { unstable_noStore as noStore } from "next/cache";
 export default function Home() {
   const [name, setname] = useState();
   const [id, setid] = useState();
@@ -16,12 +17,14 @@ export default function Home() {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      noStore();
       fetch("/api/gettime", {
         method: "GET",
         cache: "no-store",
         body: JSON.stringify({ nocach: true }),
       }).then((res) => {
         res.json().then((d) => {
+          console.log("TIME", d);
           if (!d.accept) {
             alert("You cannot submit now");
             signOut(auth)
