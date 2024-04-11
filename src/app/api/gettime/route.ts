@@ -12,7 +12,7 @@ export async function POST(request:Request) {
     if(comp1>=0 && comp2<=0){
     return NextResponse.json({ accept:true,data:result,time:now }, { status: 200 })}
     else{
-      return NextResponse.json({ accept:false,data:result }, { status: 200 }) 
+      return NextResponse.json({ accept:false,data:result,time:now }, { status: 200 }) 
     }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
