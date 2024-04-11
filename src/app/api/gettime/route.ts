@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request:NextRequest) {
+export async function GET(request:NextRequest) {
   try {
     const result = await sql`SELECT * FROM lims WHERE id='1';`;
     const now=new Date().toTimeString().split(" ")[0];

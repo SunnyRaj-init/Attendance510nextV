@@ -16,18 +16,20 @@ export default function Home() {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
-      fetch("/api/gettime", { method: "POST" }).then((res) => {
-        res.json().then((d) => {
-          if (!d.accept) {
-            alert("You cannot submit now");
-            signOut(auth)
-              .then(() => {
-                router.replace("/");
-              })
-              .catch((error) => {});
-          }
-        });
-      });
+      fetch("/api/gettime", { method: "GET", cache: "no-store" }).then(
+        (res) => {
+          res.json().then((d) => {
+            if (!d.accept) {
+              alert("You cannot submit now");
+              signOut(auth)
+                .then(() => {
+                  router.replace("/");
+                })
+                .catch((error) => {});
+            }
+          });
+        }
+      );
       fetch("/api/ip", { method: "GET" }).then((res) => {
         res.json().then((d) => {
           setip(d.ip.replace("::ffff:", ""));
