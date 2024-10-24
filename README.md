@@ -1,3 +1,4 @@
+## This Application is used to monitor students in person attendance at ASU
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
